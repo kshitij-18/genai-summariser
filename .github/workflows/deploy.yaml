@@ -26,8 +26,7 @@ jobs:
         uses: google-github-actions/get-secretmanager-secrets@v1
         with:
           secrets: |
-            GEMINI_API_KEY: projects/${{ secrets.GCP_PROJECT }}/secrets/gemini-api-key/versions/latest
-          export: true
+            GEMINI_API_KEY: projects/${{ secrets.GCP_PROJECT }}/secrets/GEMINI_API_KEY/versions/latest
 
       - name: Configure Docker for Artifact Registry
         run: gcloud auth configure-docker asia-south1-docker.pkg.dev
