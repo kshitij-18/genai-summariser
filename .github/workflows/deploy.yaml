@@ -33,15 +33,15 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          docker build -t asia-south1-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/genai-app/genai-app:${{ github.sha }} \
-                       -t asia-south1-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/genai-app/genai-app:latest .
+          docker build -t asia-south1-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/genai-repo/genai-app:${{ github.sha }} \
+                       -t asia-south1-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/genai-repo/genai-app:latest .
 
       - name: Test Docker Image
         env:
           GEMINI_API_KEY: ${{ steps.fetch-secrets.outputs.GEMINI_API_KEY }}
         run: |
           docker run --rm -e GEMINI_API_KEY="${GEMINI_API_KEY}" \
-            asia-south1-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/genai-app/genai-app:${{ github.sha }} \
+            asia-south1-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/genai-repo/genai-app:${{ github.sha }} \
             python -c "import main; print('App module loaded successfully')"
 
       - name: Push Docker Image to Artifact Registry
