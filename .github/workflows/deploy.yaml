@@ -65,7 +65,12 @@ jobs:
         run: |
           git config --global user.email "ci-bot@example.com"
           git config --global user.name "GitHub Actions Bot"
-
+     
+      - name: Check the Git Status
+        run: |
+          git status
+          git log -1
+    
       - name: Push to Hugging Face Space
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
