@@ -77,3 +77,6 @@ jobs:
           github_repo_id: ${{ github.repository }}
           huggingface_repo_id: kn2105/genai-app
           hf_token: ${{ secrets.HF_TOKEN }}
+        env:
+          GEMINI_API_KEY: ${{ steps.fetch-secrets.outputs.GEMINI_API_KEY }}
+
