@@ -41,7 +41,7 @@ jobs:
           GEMINI_API_KEY: ${{ steps.fetch-secrets.outputs.GEMINI_API_KEY }}
         run: |
           docker run --rm -e GEMINI_API_KEY="${GEMINI_API_KEY}" \
-            -e PYTHONPATH=/app
+            -e PYTHONPATH=/app \
             asia-south1-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/genai-app/genai-app:${{ github.sha }} \
             python -c "import genai_app; print('App module loaded successfully')"
 
