@@ -70,6 +70,12 @@ jobs:
         run: |
           git status
           git log -1
+        
+      - name: Set an env variable for the Hugging face space
+        run:
+            pip install huggingface_hub
+            huggingface-cli login --token ${{ secrets.HF_TOKEN }}
+            huggingface-cli spaces set-secret your-username/your-space-name GEMINI_API_KEY "${{ steps.fetch-secrets.outputs.GEMINI_API_KEY }}"
 
       - name: Push to huggingface spaces
         uses: huggingface/hub-sync@v0.1.0
@@ -77,6 +83,4 @@ jobs:
           github_repo_id: ${{ github.repository }}
           huggingface_repo_id: kn2105/genai-app
           hf_token: ${{ secrets.HF_TOKEN }}
-        env:
-          GEMINI_API_KEY: ${{ steps.fetch-secrets.outputs.GEMINI_API_KEY }}
 
