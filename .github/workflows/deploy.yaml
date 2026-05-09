@@ -46,15 +46,15 @@ jobs:
 
       - name: Push Docker Image to Artifact Registry
         run: |
-          docker push asia-south1-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/genai-app/genai-app:${{ github.sha }}
-          docker push asia-south1-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/genai-app/genai-app:latest
+          docker push asia-south1-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/genai-repo/genai-app:${{ github.sha }}
+          docker push asia-south1-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/genai-repo/genai-app:latest
 
       - name: Deploy to Cloud Run
         env:
           GEMINI_API_KEY: ${{ steps.fetch-secrets.outputs.GEMINI_API_KEY }}
         run: |
           gcloud run deploy genai-app \
-            --image asia-south1-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/genai-app/genai-app:${{ github.sha }} \
+            --image asia-south1-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/genai-repo/genai-app:${{ github.sha }} \
             --platform managed \
             --region asia-south1 \
             --allow-unauthenticated \
