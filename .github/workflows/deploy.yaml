@@ -71,6 +71,8 @@ jobs:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
           git remote add space https://huggingface.co/spaces/kn2105/genai-app || true
+          git add .
+          git commit -m "Deploying version ${{ github.sha }}" || echo "No changes
           git status
           git push https://user:${HF_TOKEN}@huggingface.co/spaces/kn2105/genai-app . ${{ github.ref_name }} --force
           echo "Pushed to Hugging Face Space successfully"
