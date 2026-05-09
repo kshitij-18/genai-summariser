@@ -2,7 +2,7 @@ name: Build, Test and Deploy GenAI App
 
 on:
   push:
-    branches: [ develop ]
+    branches: [develop]
 
 jobs:
   build-and-deploy:
@@ -65,19 +65,16 @@ jobs:
         run: |
           git config --global user.email "ci-bot@example.com"
           git config --global user.name "GitHub Actions Bot"
-     
+
       - name: Check the Git Status
         run: |
           git status
           git log -1
-    
-      - name: Push to Hugging Face Space
-        env:
-          HF_TOKEN: ${{ secrets.HF_TOKEN }}
-        run: |
-          git remote add space https://huggingface.co/spaces/kn2105/genai-app || true
-          git add .
-          git commit -m "Deploying version ${{ github.sha }}" || echo "No changes"
-          git status
-          git push https://user:${HF_TOKEN}@huggingface.co/spaces/kn2105/genai-app ${{ github.ref_name }} --force
-          echo "Pushed to Hugging Face Space successfully"
+
+      - name: Push to huggingface spaces
+        uses: huggingface/hub-sync@v1.0
+        with:
+          github_repo_id: ${{ github.repository }}
+          huggingface_repo_id: kn2105/genai-app
+          repo_type: space
+          hf_token: ${{ secrets.HF_TOKEN }}
