@@ -38,7 +38,7 @@ jobs:
 
       - name: Test Docker Image
         env:
-          GEMINI_API_KEY: ${{ env.GEMINI_API_KEY }}
+          GEMINI_API_KEY: ${{ steps.fetch-secrets.outputs.GEMINI_API_KEY }}
         run: |
           docker run --rm -e GEMINI_API_KEY="${GEMINI_API_KEY}" \
             asia-south1-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/genai-app/genai-app:${{ github.sha }} \
@@ -50,6 +50,8 @@ jobs:
           docker push asia-south1-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/genai-app/genai-app:latest
 
       - name: Deploy to Cloud Run
+        env:
+          GEMINI_API_KEY: ${{ steps.fetch-secrets.outputs.GEMINI_API_KEY }}
         run: |
           gcloud run deploy genai-app \
             --image asia-south1-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/genai-app/genai-app:${{ github.sha }} \
@@ -57,7 +59,7 @@ jobs:
             --region asia-south1 \
             --allow-unauthenticated \
             --port 8000 \
-            --set-env-vars GEMINI_API_KEY=${{ env.GEMINI_API_KEY }}
+            --set-env-vars GEMINI_API_KEY="${GEMINI_API_KEY}"
 
       - name: Set up Git for Hugging Face
         run: |
