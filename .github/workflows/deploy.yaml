@@ -14,9 +14,11 @@ jobs:
           fetch-depth: 0
 
       - name: Authenticate to Google Cloud
+        id: gcp-auth
         uses: google-github-actions/auth@v1
         with:
           credentials_json: ${{ secrets.GCP_SA_KEY }}
+          create_credentials_file: true
 
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v1
@@ -65,6 +67,12 @@ jobs:
         run: |
           git config --global user.email "ci-bot@example.com"
           git config --global user.name "GitHub Actions Bot"
+      
+      - name: Remove temporary GCP credentials file
+        if: always()
+        run: |
+          rm -f "${{ steps.gcp-auth.outputs.credentials_file_path }}"
+          rm -f gha-creds-*.json
 
       - name: Check the Git Status
         run: |
